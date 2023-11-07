@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
+import { AuthContext } from "../../../providers/AuthProvider";
 
 const NavBar = () => {
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {})
+      .catch((error) => console.log(error));
+  };
+
   const navLinks = (
     <>
       <li>
@@ -9,6 +19,9 @@ const NavBar = () => {
       </li>
       <li>
         <Link to="/contact">Contact</Link>
+      </li>
+      <li>
+        <Link to="/signup">Register</Link>
       </li>
     </>
   );
@@ -40,13 +53,24 @@ const NavBar = () => {
               {navLinks}
             </ul>
           </div>
-          <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
+          <a className="btn btn-ghost normal-case text-xl">ShoppingCo</a>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navLinks}</ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">Button</a>
+          {user ? (
+            <button
+              onClick={handleLogOut}
+              className="btn btn-outline btn-warning"
+            >
+              Logout <FaArrowRight />
+            </button>
+          ) : (
+            <Link to="/login" className="btn btn-outline btn-warning">
+              Login <FaArrowRight />
+            </Link>
+          )}
         </div>
       </div>
     </div>
